@@ -1,17 +1,7 @@
-function serialize(root) {
-  const result = [];
-  const queue = [root];
-  while (queue.length) {
-    const node = queue.shift();
-    if (node) {
-      result.push(node.val);
-      queue.push(node.left, node.right);
-    } else {
-      result.push(null);
-    }
+const fibonacci = (n) => {
+  const sequence = [0, 1];
+  for (let i = 2; i <= n; i++) {
+    sequence.push(sequence[i - 1] + sequence[i - 2]);
   }
-  while (result[result.length - 1] === null) {
-    result.pop();
-  }
-  return result;
-}
+  return sequence;
+};
