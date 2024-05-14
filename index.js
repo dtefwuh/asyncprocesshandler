@@ -1,33 +1,24 @@
-function totalNQueens(n) {
-  let count = 0;
-  const board = Array.from({ length: n }, () =>
-    Array.from({ length: n }, () => "."),
-  );
-  backtrack(0);
-  return count;
-  function backtrack(row) {
-    if (row === n) {
-      count++;
-      return;
-    }
-    for (let col = 0; col < n; col++) {
-      if (isValid(row, col)) {
-        board[row][col] = "Q";
-        backtrack(row + 1);
-        board[row][col] = ".";
+function canFinish(numCourses, prerequisites) {
+  const graph = new Map();
+  const visited = new Array(numCourses).fill(0);
+  for (const [course, prerequisite] of prerequisites) {
+    if (!graph.has(course)) graph.set(course, []);
+    graph.get(course).push(prerequisite);
+  }
+  for (let i = 0; i < numCourses; i++) {
+    if (!dfs(i)) return false;
+  }
+  return true;
+  function dfs(course) {
+    if (visited[course] === 1) return false;
+    if (visited[course] === -1) return true;
+    visited[course] = 1;
+    if (graph.has(course)) {
+      for (const prerequisite of graph.get(course)) {
+        if (!dfs(prerequisite)) return false;
       }
     }
-  }
-  function isValid(row, col) {
-    for (let i = 0; i < row; i++) {
-      if (board[i][col] === "Q") return false;
-    }
-    for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-      if (board[i][j] === "Q") return false;
-    }
-    for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-      if (board[i][j] === "Q") return false;
-    }
+    visited[course] = -1;
     return true;
   }
 }
